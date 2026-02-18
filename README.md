@@ -73,6 +73,7 @@ This project is currently under development. See the TODO checklist below for pr
 ```
 https://your-worker.workers.dev
 ```
+*Note: Replace `your-worker` with your actual Cloudflare Workers project name.*
 
 ### Endpoints
 
@@ -131,7 +132,7 @@ curl "https://your-worker.workers.dev/api/qr?data=https://example.com&size=256" 
 
 ### Frontend Usage
 
-Simply visit the web interface at `https://your-worker.workers.dev` and use the form to:
+Simply visit the web interface at `https://your-worker.workers.dev` (*replace with your actual worker URL*) and use the form to:
 1. Enter your text or URL
 2. Customize the QR code settings
 3. Preview the generated QR code
