@@ -41,6 +41,58 @@ describe('GET /api/qr', () => {
     assert.ok(res.headers.get('cache-control')?.includes('max-age'));
   });
 
+  // ── Color & margin ──────────────────────────────────────
+
+  it('accepts custom colorDark and colorLight', async () => {
+    const res = await fetch(`${BASE}/api/qr?data=color-test&colorDark=%233b82f6ff&colorLight=%23f0f0f0ff`);
+    assert.equal(res.status, 200);
+    assert.equal(res.headers.get('content-type'), 'image/png');
+  });
+
+  it('accepts transparent background (colorLight=#00000000)', async () => {
+    const res = await fetch(`${BASE}/api/qr?data=transparent&colorLight=%2300000000`);
+    assert.equal(res.status, 200);
+  });
+
+  it('returns 400 for invalid colorDark hex', async () => {
+    const res = await fetch(`${BASE}/api/qr?data=x&colorDark=notacolor`);
+    assert.equal(res.status, 400);
+    const json = await res.json();
+    assert.ok(json.error.includes('colorDark'));
+  });
+
+  it('returns 400 for invalid colorLight hex', async () => {
+    const res = await fetch(`${BASE}/api/qr?data=x&colorLight=zzz`);
+    assert.equal(res.status, 400);
+    const json = await res.json();
+    assert.ok(json.error.includes('colorLight'));
+  });
+
+  it('accepts margin=0', async () => {
+    const res = await fetch(`${BASE}/api/qr?data=margin-test&margin=0`);
+    assert.equal(res.status, 200);
+  });
+
+  it('accepts margin=8', async () => {
+    const res = await fetch(`${BASE}/api/qr?data=margin-test&margin=8`);
+    assert.equal(res.status, 200);
+  });
+
+  it('returns 400 for margin=11', async () => {
+    const res = await fetch(`${BASE}/api/qr?data=x&margin=11`);
+    assert.equal(res.status, 400);
+    const json = await res.json();
+    assert.ok(json.error.includes('margin'));
+  });
+
+  it('accepts colors with SVG format', async () => {
+    const res = await fetch(`${BASE}/api/qr?data=svg-color&format=svg&colorDark=%23ff0000ff&colorLight=%230000ffff`);
+    assert.equal(res.status, 200);
+    assert.equal(res.headers.get('content-type'), 'image/svg+xml');
+    const svg = await res.text();
+    assert.ok(svg.includes('<svg'));
+  });
+
   // ── Validation errors ───────────────────────────────────
 
   it('returns 400 when data is missing', async () => {

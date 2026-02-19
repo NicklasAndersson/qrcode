@@ -5,10 +5,12 @@ const VALID_FORMATS = new Set(['png', 'svg']);
 const MAX_SIZE = 2048;
 const MIN_SIZE = 32;
 const MAX_DATA_LENGTH = 4296;
+const HEX_COLOR_RE = /^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
 
 /**
  * Handle GET /api/qr requests.
- * Query params: data (required), size, format, errorCorrectionLevel
+ * Query params: data (required), size, format, errorCorrectionLevel,
+ *               colorDark, colorLight, margin
  */
 export async function handleQRRequest(request) {
   // Only allow GET
@@ -21,6 +23,9 @@ export async function handleQRRequest(request) {
   const sizeParam = url.searchParams.get('size');
   const format = (url.searchParams.get('format') || 'png').toLowerCase();
   const errorCorrectionLevel = (url.searchParams.get('errorCorrectionLevel') || 'M').toUpperCase();
+  const colorDark = url.searchParams.get('colorDark') || '#000000ff';
+  const colorLight = url.searchParams.get('colorLight') || '#ffffffff';
+  const marginParam = url.searchParams.get('margin');
 
   // Validation — fast-fail before any heavy work
   if (!data) {
@@ -40,9 +45,20 @@ export async function handleQRRequest(request) {
   if (!VALID_ERROR_LEVELS.has(errorCorrectionLevel)) {
     return jsonError('Invalid errorCorrectionLevel. Must be L, M, Q, or H.', 400);
   }
+  if (!HEX_COLOR_RE.test(colorDark)) {
+    return jsonError('Invalid colorDark. Must be a hex color (e.g. #000000 or #000000ff).', 400);
+  }
+  if (!HEX_COLOR_RE.test(colorLight)) {
+    return jsonError('Invalid colorLight. Must be a hex color (e.g. #ffffff or #ffffff00).', 400);
+  }
+
+  const margin = marginParam != null ? parseInt(marginParam, 10) : 2;
+  if (isNaN(margin) || margin < 0 || margin > 10) {
+    return jsonError('Invalid margin. Must be between 0 and 10.', 400);
+  }
 
   try {
-    const options = { size, errorCorrectionLevel };
+    const options = { size, errorCorrectionLevel, margin, colorDark, colorLight };
 
     if (format === 'svg') {
       const svg = await generateSVG(data, options);

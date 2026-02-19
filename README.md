@@ -6,10 +6,13 @@ A fast, globally distributed QR code generator running on [Cloudflare Workers](h
 
 ## Features
 
-- **REST API** — `GET /api/qr` returns a QR code image with configurable size, format, and error correction
-- **Web UI** — responsive form with live preview and one-click download
-- **Multiple QR types** — plain text/URL, vCard (contact), and WiFi network
+- **REST API** — `GET /api/qr` returns a QR code image with configurable size, format, error correction, colours, and margin
+- **Web UI** — responsive form with live preview, download, copy-to-clipboard, and shareable links
+- **Multiple QR types** — plain text/URL, vCard (contact), WiFi network, Email, SMS, and Geo location
+- **Custom colours** — foreground & background colour pickers with transparent background support
+- **Margin control** — adjustable quiet zone (0–8 modules)
 - **PNG & SVG** output
+- **Smart filenames** — downloads are auto-named based on content (e.g. `qr-example-com.png`)
 - **Dark mode** — toggle or auto-detect from system preference
 - **CORS enabled** — use the API from any origin
 
@@ -30,6 +33,9 @@ npm run dev      # http://localhost:8787
 | `size` | no | `256` | Width & height in pixels (32–2 048) |
 | `format` | no | `png` | `png` or `svg` |
 | `errorCorrectionLevel` | no | `M` | `L`, `M`, `Q`, or `H` |
+| `colorDark` | no | `#000000ff` | Foreground hex colour (`#RGB`, `#RRGGBB`, or `#RRGGBBAA`) |
+| `colorLight` | no | `#ffffffff` | Background hex colour (use `#00000000` for transparent) |
+| `margin` | no | `2` | Quiet zone in modules (0–10) |
 
 **Examples:**
 

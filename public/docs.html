@@ -98,6 +98,18 @@
             <td><code>errorCorrectionLevel</code></td><td>string</td><td>No</td><td><code>M</code></td>
             <td>Error correction: <code>L</code>, <code>M</code>, <code>Q</code>, or <code>H</code></td>
           </tr>
+          <tr>
+            <td><code>colorDark</code></td><td>string</td><td>No</td><td><code>#000000ff</code></td>
+            <td>Foreground colour as hex (<code>#RGB</code>, <code>#RGBA</code>, <code>#RRGGBB</code>, or <code>#RRGGBBAA</code>)</td>
+          </tr>
+          <tr>
+            <td><code>colorLight</code></td><td>string</td><td>No</td><td><code>#ffffffff</code></td>
+            <td>Background colour as hex. Use <code>#00000000</code> for transparent.</td>
+          </tr>
+          <tr>
+            <td><code>margin</code></td><td>integer</td><td>No</td><td><code>2</code></td>
+            <td>Quiet zone in modules (0–10)</td>
+          </tr>
         </tbody>
       </table>
 
@@ -123,6 +135,10 @@
       <h3>cURL – SVG</h3>
       <pre><code>curl "https://&lt;your-worker&gt;.workers.dev/api/qr?data=Hello+World&amp;format=svg" \
   -o qrcode.svg</code></pre>
+
+      <h3>cURL – Custom colours &amp; margin</h3>
+      <pre><code>curl "https://&lt;your-worker&gt;.workers.dev/api/qr?data=hello&amp;colorDark=%233b82f6ff&amp;colorLight=%2300000000&amp;margin=0" \
+  -o qrcode-blue-transparent.png</code></pre>
 
       <h3>JavaScript (Fetch)</h3>
       <pre><code>const url = new URL('https://&lt;your-worker&gt;.workers.dev/api/qr');

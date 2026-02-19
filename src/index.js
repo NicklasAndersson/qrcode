@@ -99,12 +99,18 @@ function buildCacheKey(url) {
   const size = url.searchParams.get('size') || '256';
   const format = (url.searchParams.get('format') || 'png').toLowerCase();
   const ecl = (url.searchParams.get('errorCorrectionLevel') || 'M').toUpperCase();
+  const colorDark = (url.searchParams.get('colorDark') || '#000000ff').toLowerCase();
+  const colorLight = (url.searchParams.get('colorLight') || '#ffffffff').toLowerCase();
+  const margin = url.searchParams.get('margin') || '2';
 
   const norm = new URL(url.origin + '/api/qr');
   norm.searchParams.set('data', data);
   norm.searchParams.set('size', size);
   norm.searchParams.set('format', format);
   norm.searchParams.set('errorCorrectionLevel', ecl);
+  norm.searchParams.set('colorDark', colorDark);
+  norm.searchParams.set('colorLight', colorLight);
+  norm.searchParams.set('margin', margin);
   return new Request(norm.toString(), { method: 'GET' });
 }
 
