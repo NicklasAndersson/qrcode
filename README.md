@@ -4,6 +4,8 @@ A fast, globally distributed QR code generator running on [Cloudflare Workers](h
 
 **Live:** <https://qr.wwn.se>
 
+![Screenshot](qrscreenshot.png)
+
 ## Features
 
 - **REST API** — `GET /api/qr` returns a QR code image with configurable size, format, error correction, colours, and margin
