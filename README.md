@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # QR Code Generator
 
 A QR code generator built with Cloudflare Workers that provides both an API and a web interface for generating QR codes.
@@ -192,6 +191,3 @@ MIT
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-=======
-# qrcode
->>>>>>> origin/main
