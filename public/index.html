@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QR Code Generator</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-row">
+        <h1>📱 QR Code Generator</h1>
+        <button id="theme-toggle" type="button" title="Toggle dark mode" aria-label="Toggle dark mode">🌙</button>
+      </div>
+      <p class="subtitle">Generate QR codes instantly. Paste a URL or any text below.</p>
+      <nav>
+        <a href="/docs.html">API Documentation</a>
+      </nav>
+    </header>
+
+    <main>
+      <form id="qr-form" autocomplete="off">
+        <!-- QR Type selector -->
+        <div class="form-group">
+          <label for="type-select">QR Type</label>
+          <select id="type-select" name="type">
+            <option value="text" selected>Text / URL</option>
+            <option value="vcard">vCard (Contact)</option>
+            <option value="wifi">WiFi Network</option>
+          </select>
+        </div>
+
+        <!-- Text / URL input (default) -->
+        <div id="fields-text" class="type-fields">
+          <div class="form-group">
+            <label for="data-input">Text or URL</label>
+            <input
+              type="text"
+              id="data-input"
+              name="data"
+              placeholder="https://example.com"
+              autofocus
+            />
+          </div>
+        </div>
+
+        <!-- vCard fields -->
+        <div id="fields-vcard" class="type-fields hidden">
+          <div class="form-row form-row-2">
+            <div class="form-group">
+              <label for="vcard-fn">First Name</label>
+              <input type="text" id="vcard-fn" placeholder="John" />
+            </div>
+            <div class="form-group">
+              <label for="vcard-ln">Last Name</label>
+              <input type="text" id="vcard-ln" placeholder="Doe" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="vcard-org">Organization</label>
+            <input type="text" id="vcard-org" placeholder="Acme Inc." />
+          </div>
+          <div class="form-row form-row-2">
+            <div class="form-group">
+              <label for="vcard-phone">Phone</label>
+              <input type="tel" id="vcard-phone" placeholder="+1 555-1234" />
+            </div>
+            <div class="form-group">
+              <label for="vcard-email">Email</label>
+              <input type="email" id="vcard-email" placeholder="john@example.com" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="vcard-url">Website</label>
+            <input type="url" id="vcard-url" placeholder="https://example.com" />
+          </div>
+        </div>
+
+        <!-- WiFi fields -->
+        <div id="fields-wifi" class="type-fields hidden">
+          <div class="form-group">
+            <label for="wifi-ssid">Network Name (SSID)</label>
+            <input type="text" id="wifi-ssid" placeholder="MyWiFi" />
+          </div>
+          <div class="form-row form-row-2">
+            <div class="form-group">
+              <label for="wifi-enc">Encryption</label>
+              <select id="wifi-enc">
+                <option value="WPA" selected>WPA/WPA2</option>
+                <option value="WEP">WEP</option>
+                <option value="nopass">None</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="wifi-pass">Password</label>
+              <input type="text" id="wifi-pass" placeholder="secret" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>
+              <input type="checkbox" id="wifi-hidden" /> Hidden network
+            </label>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="size-select">Size (px)</label>
+            <select id="size-select" name="size">
+              <option value="128">128 × 128</option>
+              <option value="256" selected>256 × 256</option>
+              <option value="512">512 × 512</option>
+              <option value="1024">1024 × 1024</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="format-select">Format</label>
+            <select id="format-select" name="format">
+              <option value="png" selected>PNG</option>
+              <option value="svg">SVG</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="ecl-select">Error Correction</label>
+            <select id="ecl-select" name="errorCorrectionLevel">
+              <option value="L">Low (L)</option>
+              <option value="M" selected>Medium (M)</option>
+              <option value="Q">Quartile (Q)</option>
+              <option value="H">High (H)</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" id="generate-btn">Generate QR Code</button>
+      </form>
+
+      <section id="preview-section" class="hidden">
+        <h2>Preview</h2>
+        <div id="qr-preview"></div>
+        <div class="actions">
+          <a id="download-btn" class="btn" download="qrcode">Download</a>
+        </div>
+      </section>
+
+      <section id="error-section" class="hidden">
+        <p id="error-message"></p>
+      </section>
+    </main>
+
+    <footer>
+      <p>Powered by <a href="https://workers.cloudflare.com" target="_blank" rel="noopener">Cloudflare Workers</a></p>
+    </footer>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

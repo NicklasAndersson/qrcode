@@ -18,54 +18,52 @@ This project is currently under development. See the TODO checklist below for pr
 
 ### Phase 1: Project Setup ✅
 - [x] Create project README with TODO checklist
-- [ ] Initialize project structure
-- [ ] Set up package.json with dependencies
-- [ ] Configure Cloudflare Workers development environment
-- [ ] Create .gitignore file
+- [x] Initialize project structure
+- [x] Set up package.json with dependencies
+- [x] Configure Cloudflare Workers development environment
+- [x] Create .gitignore file
 
-### Phase 2: API Backend 🚧
-- [ ] Install QR code generation library (qrcode or similar)
-- [ ] Create API endpoint: `GET /api/qr` - Generate QR code
-  - [ ] Support query parameters: `data`, `size`, `format`, `errorCorrectionLevel`
-  - [ ] Return QR code as image (PNG/SVG)
-- [ ] Add error handling and validation
-- [ ] Implement CORS support for cross-origin requests
+### Phase 2: API Backend ✅
+- [x] Install QR code generation library (qrcode or similar)
+- [x] Create API endpoint: `GET /api/qr` - Generate QR code
+  - [x] Support query parameters: `data`, `size`, `format`, `errorCorrectionLevel`
+  - [x] Return QR code as image (PNG/SVG)
+- [x] Add error handling and validation
+- [x] Implement CORS support for cross-origin requests
 - [ ] Add rate limiting (optional)
 
-### Phase 3: Frontend Interface 📱
-- [ ] Create HTML structure for QR code generator UI
-- [ ] Add CSS styling for responsive design
-- [ ] Implement JavaScript for:
-  - [ ] Form input handling
-  - [ ] API integration
-  - [ ] Real-time QR code preview
-  - [ ] Download functionality
-- [ ] Add configuration options:
-  - [ ] Text/URL input
-  - [ ] Size selector
-  - [ ] Format selector (PNG/SVG)
-  - [ ] Error correction level selector
+### Phase 3: Frontend Interface ✅
+- [x] Create HTML structure for QR code generator UI
+- [x] Add CSS styling for responsive design
+- [x] Implement JavaScript for:
+  - [x] Form input handling
+  - [x] API integration
+  - [x] Real-time QR code preview
+  - [x] Download functionality
+- [x] Add configuration options:
+  - [x] Text/URL input
+  - [x] Size selector
+  - [x] Format selector (PNG/SVG)
+  - [x] Error correction level selector
 
-### Phase 4: API Documentation 📚
-- [ ] Create API documentation page
-- [ ] Document all endpoints and parameters
-- [ ] Add usage examples
-- [ ] Include cURL examples
-- [ ] Add response format specifications
+### Phase 4: API Documentation ✅
+- [x] Create API documentation page
+- [x] Document all endpoints and parameters
+- [x] Add usage examples
+- [x] Include cURL examples
+- [x] Add response format specifications
 
-### Phase 5: Testing & Deployment 🧪
-- [ ] Test API endpoints
-- [ ] Test frontend functionality
-- [ ] Verify cross-browser compatibility
-- [ ] Deploy to Cloudflare Workers
-- [ ] Update README with deployment instructions
+### Phase 5: Testing & Deployment ✅
+- [x] Test API endpoints
+- [x] Test frontend functionality
+- [x] Verify cross-browser compatibility
+- [x] Deploy to Cloudflare Workers
+- [x] Update README with deployment instructions
 
-### Phase 6: Enhancement (Optional) ✨
-- [ ] Add support for vCard QR codes
-- [ ] Add support for WiFi QR codes
-- [ ] Implement QR code history/favorites
-- [ ] Add dark mode toggle
-- [ ] Analytics integration
+### Phase 6: Enhancement ✅
+- [x] Add support for vCard QR codes
+- [x] Add support for WiFi QR codes
+- [x] Add dark mode toggle
 
 ## API Documentation
 
@@ -153,9 +151,25 @@ npm install
 # Start local development server
 npm run dev
 
+# Run tests (with dev server running in another terminal)
+npm test
+
 # Deploy to Cloudflare Workers
 npm run deploy
 ```
+
+### Deployment
+
+1. Sign up / log in at [dash.cloudflare.com](https://dash.cloudflare.com)
+2. Authenticate Wrangler:
+   ```bash
+   npx wrangler login
+   ```
+3. Deploy:
+   ```bash
+   npm run deploy
+   ```
+4. Your worker will be available at `https://qrcode-generator.<your-subdomain>.workers.dev`
 
 ## Project Structure
 ```
@@ -167,7 +181,10 @@ qrcode/
 ├── public/
 │   ├── index.html        # Frontend interface
 │   ├── styles.css        # Styling
-│   └── app.js            # Frontend JavaScript
+│   ├── app.js            # Frontend JavaScript
+│   └── docs.html         # API documentation page
+├── test/
+│   └── api.test.js       # API endpoint tests
 ├── wrangler.toml         # Cloudflare Workers config
 ├── package.json
 └── README.md

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Documentation – QR Code Generator</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .docs { text-align: left; }
+    .docs h2 { font-size: 1.25rem; margin: 1.5rem 0 0.5rem; color: var(--color-text); }
+    .docs h3 { font-size: 1.05rem; margin: 1.25rem 0 0.4rem; color: var(--color-text); }
+    .docs p, .docs li { font-size: 0.92rem; color: var(--color-text-muted); }
+    .docs ul { padding-left: 1.2rem; margin: 0.4rem 0; }
+    .docs code {
+      background: var(--color-bg);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+    .docs pre {
+      background: var(--color-bg);
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin: 0.5rem 0 1rem;
+    }
+    .docs pre code {
+      background: none;
+      padding: 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.75rem 0;
+      font-size: 0.88rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+    th { font-weight: 600; color: var(--color-text); }
+    td { color: var(--color-text-muted); }
+    .badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .badge-get { background: #dcfce7; color: #166534; }
+    @media (prefers-color-scheme: dark) {
+      .badge-get { background: #14532d; color: #86efac; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container docs">
+    <header>
+      <h1>📚 API Documentation</h1>
+      <p class="subtitle">QR Code Generator REST API reference</p>
+      <nav>
+        <a href="/">← Back to Generator</a>
+      </nav>
+    </header>
+
+    <main>
+      <h2>Base URL</h2>
+      <pre><code>https://&lt;your-worker&gt;.workers.dev</code></pre>
+
+      <h2>Endpoints</h2>
+
+      <h3><span class="badge badge-get">GET</span> <code>/api/qr</code></h3>
+      <p>Generate a QR code image from the supplied data.</p>
+
+      <h3>Query Parameters</h3>
+      <table>
+        <thead>
+          <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Default</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>data</code></td><td>string</td><td>Yes</td><td>—</td>
+            <td>The text or URL to encode in the QR code (max 4 296 chars)</td>
+          </tr>
+          <tr>
+            <td><code>size</code></td><td>integer</td><td>No</td><td>256</td>
+            <td>Width &amp; height in pixels (32 – 2 048)</td>
+          </tr>
+          <tr>
+            <td><code>format</code></td><td>string</td><td>No</td><td><code>png</code></td>
+            <td>Output format: <code>png</code> or <code>svg</code></td>
+          </tr>
+          <tr>
+            <td><code>errorCorrectionLevel</code></td><td>string</td><td>No</td><td><code>M</code></td>
+            <td>Error correction: <code>L</code>, <code>M</code>, <code>Q</code>, or <code>H</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Response</h3>
+      <ul>
+        <li><strong>Content-Type:</strong> <code>image/png</code> or <code>image/svg+xml</code></li>
+        <li><strong>Body:</strong> Binary image data (PNG) or SVG markup</li>
+        <li><strong>Cache:</strong> Responses include <code>Cache-Control: public, max-age=86400</code></li>
+      </ul>
+
+      <h3>Error Response</h3>
+      <pre><code>{
+  "error": "Missing required parameter: data"
+}</code></pre>
+      <p>Errors return a JSON body with an appropriate HTTP status code (400 or 500).</p>
+
+      <h2>Examples</h2>
+
+      <h3>cURL – PNG</h3>
+      <pre><code>curl "https://&lt;your-worker&gt;.workers.dev/api/qr?data=https://example.com&amp;size=512" \
+  -o qrcode.png</code></pre>
+
+      <h3>cURL – SVG</h3>
+      <pre><code>curl "https://&lt;your-worker&gt;.workers.dev/api/qr?data=Hello+World&amp;format=svg" \
+  -o qrcode.svg</code></pre>
+
+      <h3>JavaScript (Fetch)</h3>
+      <pre><code>const url = new URL('https://&lt;your-worker&gt;.workers.dev/api/qr');
+url.searchParams.set('data', 'https://example.com');
+url.searchParams.set('size', '300');
+
+const img = document.createElement('img');
+img.src = url.toString();
+document.body.appendChild(img);</code></pre>
+
+      <h3>Python (requests)</h3>
+      <pre><code>import requests
+
+resp = requests.get(
+    "https://&lt;your-worker&gt;.workers.dev/api/qr",
+    params={"data": "https://example.com", "size": 256, "format": "png"},
+)
+with open("qrcode.png", "wb") as f:
+    f.write(resp.content)</code></pre>
+
+      <h2>CORS</h2>
+      <p>All API responses include permissive CORS headers, allowing requests from any origin:</p>
+      <ul>
+        <li><code>Access-Control-Allow-Origin: *</code></li>
+        <li><code>Access-Control-Allow-Methods: GET, OPTIONS</code></li>
+      </ul>
+    </main>
+
+    <footer>
+      <p>Powered by <a href="https://workers.cloudflare.com" target="_blank" rel="noopener">Cloudflare Workers</a></p>
+    </footer>
+  </div>
+</body>
+</html>
