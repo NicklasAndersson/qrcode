@@ -15,8 +15,6 @@
   const errorMessage = document.getElementById('error-message');
   const themeToggle = document.getElementById('theme-toggle');
 
-  let debounceTimer = null;
-
   // ── Dark‑mode toggle ─────────────────────────────────────
 
   function applyTheme(theme) {
@@ -177,23 +175,33 @@
     }
   }
 
+  // ── Dirty state ───────────────────────────────────────────
+
+  let dirty = false;
+
+  function markDirty() {
+    if (!dirty) {
+      dirty = true;
+      generateBtn.classList.add('dirty');
+    }
+  }
+
+  function clearDirty() {
+    dirty = false;
+    generateBtn.classList.remove('dirty');
+  }
+
   // ── Events ────────────────────────────────────────────────
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     generateQR();
+    clearDirty();
   });
 
-  function onInputChange() {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
-      if (getQRData()) generateQR();
-    }, 500);
-  }
-
-  // Listen on all interactive inputs
+  // Mark the button as dirty when any input changes
   document.querySelectorAll('#qr-form input, #qr-form select').forEach((el) => {
-    el.addEventListener('input', onInputChange);
-    el.addEventListener('change', onInputChange);
+    el.addEventListener('input', markDirty);
+    el.addEventListener('change', markDirty);
   });
 })();

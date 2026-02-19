@@ -215,6 +215,14 @@ button[type='submit']:disabled {
   cursor: not-allowed;
 }
 
+button[type='submit'].dirty {
+  background: #f59e0b;
+}
+
+button[type='submit'].dirty:hover {
+  background: #d97706;
+}
+
 /* Preview */
 #preview-section {
   background: var(--color-surface);
