@@ -71,6 +71,17 @@ npm test             # node --test (requires dev server running)
 npm run deploy       # wrangler deploy
 ```
 
+## Docker
+
+A standalone `server.js` (plain Node.js HTTP server) serves both the API and static files for container deployments.
+
+```bash
+docker build -t qrcode-generator .
+docker run -p 8080:8080 qrcode-generator
+```
+
+The GitHub Actions workflow (`.github/workflows/docker.yml`) builds and pushes to `ghcr.io/nicklasandersson/qrcode` on every push to `main`.
+
 ## Testing
 
 Tests run against `http://localhost:8787` (override with `TEST_BASE_URL` env var).
