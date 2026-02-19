@@ -1,6 +1,7 @@
 import { generatePNG, generateSVG } from './qr.js';
 
-const VALID_ERROR_LEVELS = ['L', 'M', 'Q', 'H'];
+const VALID_ERROR_LEVELS = new Set(['L', 'M', 'Q', 'H']);
+const VALID_FORMATS = new Set(['png', 'svg']);
 const MAX_SIZE = 2048;
 const MIN_SIZE = 32;
 const MAX_DATA_LENGTH = 4296;
@@ -10,17 +11,21 @@ const MAX_DATA_LENGTH = 4296;
  * Query params: data (required), size, format, errorCorrectionLevel
  */
 export async function handleQRRequest(request) {
+  // Only allow GET
+  if (request.method !== 'GET') {
+    return jsonError('Method not allowed', 405);
+  }
+
   const url = new URL(request.url);
   const data = url.searchParams.get('data');
   const sizeParam = url.searchParams.get('size');
   const format = (url.searchParams.get('format') || 'png').toLowerCase();
   const errorCorrectionLevel = (url.searchParams.get('errorCorrectionLevel') || 'M').toUpperCase();
 
-  // Validation
+  // Validation — fast-fail before any heavy work
   if (!data) {
     return jsonError('Missing required parameter: data', 400);
   }
-
   if (data.length > MAX_DATA_LENGTH) {
     return jsonError(`Data too long. Maximum length is ${MAX_DATA_LENGTH} characters.`, 400);
   }
@@ -29,12 +34,10 @@ export async function handleQRRequest(request) {
   if (isNaN(size) || size < MIN_SIZE || size > MAX_SIZE) {
     return jsonError(`Invalid size. Must be between ${MIN_SIZE} and ${MAX_SIZE}.`, 400);
   }
-
-  if (!['png', 'svg'].includes(format)) {
+  if (!VALID_FORMATS.has(format)) {
     return jsonError('Invalid format. Supported formats: png, svg', 400);
   }
-
-  if (!VALID_ERROR_LEVELS.includes(errorCorrectionLevel)) {
+  if (!VALID_ERROR_LEVELS.has(errorCorrectionLevel)) {
     return jsonError('Invalid errorCorrectionLevel. Must be L, M, Q, or H.', 400);
   }
 
@@ -66,6 +69,9 @@ export async function handleQRRequest(request) {
 function jsonError(message, status) {
   return new Response(JSON.stringify({ error: message }), {
     status,
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-store',
+    },
   });
 }

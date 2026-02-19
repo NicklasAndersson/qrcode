@@ -2,7 +2,7 @@
 
 A fast, globally distributed QR code generator running on [Cloudflare Workers](https://workers.cloudflare.com). Provides a REST API and a web interface for generating QR codes in PNG or SVG format.
 
-**Live:** <https://qrcode-generator.wwn.workers.dev>
+**Live:** <https://qr.wwn.se>
 
 ## Features
 
@@ -35,21 +35,21 @@ npm run dev      # http://localhost:8787
 
 ```bash
 # PNG
-curl "https://qrcode-generator.wwn.workers.dev/api/qr?data=https://example.com&size=512" -o qr.png
+curl "https://qr.wwn.se/api/qr?data=https://example.com&size=512" -o qr.png
 
 # SVG
-curl "https://qrcode-generator.wwn.workers.dev/api/qr?data=Hello+World&format=svg" -o qr.svg
+curl "https://qr.wwn.se/api/qr?data=Hello+World&format=svg" -o qr.svg
 ```
 
 ```javascript
 const img = document.createElement('img');
-img.src = 'https://qrcode-generator.wwn.workers.dev/api/qr?data=Hello&size=300';
+img.src = 'https://qr.wwn.se/api/qr?data=Hello&size=300';
 document.body.appendChild(img);
 ```
 
 Errors return JSON: `{ "error": "..." }` with an appropriate HTTP status.
 
-Full interactive docs are available at [`/docs.html`](https://qrcode-generator.wwn.workers.dev/docs.html).
+Full interactive docs are available at [`/docs.html`](https://qr.wwn.se/docs.html).
 
 ## Development
 
